@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class AuthService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   // _firebaseAuth는 Firebase Authentication 서비스의 인스턴스를 나타내는 객체
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   // _firebaseFirestore Firebase Firestore 서비스의 인스턴스를 나타내는 객체
 
   //sign user in
@@ -16,12 +18,22 @@ class AuthService extends ChangeNotifier {
     //firebase에 반환함으로서 인증작업을 진행한다.
 
     try {
-      //sign in
+      //사용자 등록
       UserCredential userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      //아직 컬랙션이 없는 사용자를 위한 도큐먼트 추가
+      _firestore.collection('uesrs').doc(userCredential.user!.uid).set({
+        //uesrs컬랙션 내 uid가 현재 사용자 uid인 곳에서, uid를 형재 사용자 uid로
+        // email을 email로 설정한다.
+
+        'uid': userCredential.user!.uid,
+        'email': email,
+      }, SetOptions(merge: true));
+      // merge: true를 통해 갱신이 아닌 병합을 한다.(완전히 새로운 데이터를 넣는것이 아닌 변한 부분만 바꿈)
 
       return userCredential;
     }
@@ -44,6 +56,12 @@ class AuthService extends ChangeNotifier {
         email: email,
         password: password,
       );
+
+      //유저생성 후 새로운 유저 컬랙션을 위한 도큐먼트 만들기
+      _firestore.collection('uesrs').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'email': email,
+      });
 
       return userCredential;
     }
