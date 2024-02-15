@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           children: snapshot.data!.docs
               //스트리밍으로 부터 받은(snapshot) 데이터(data)의 각 문서(docs) 에 대해
               .map<Widget>((doc) => _buildUserListItem(doc))
-              // _buildUserListItem을 호출하여 각 사용자를 위한 위젯 목록을 만듬
+              // _buildUserListItem을 호출하여 각 사용자를 위한 위젯 목록형태로 만듬
               .toList(),
         );
       },
@@ -78,18 +78,28 @@ class _HomePageState extends State<HomePage> {
 //build individual user list item
 
   Widget _buildUserListItem(DocumentSnapshot document) {
+    //각 사용자에 대한 DocumentSnapshot을 매개변수로 받음
+
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+    //document로 부터 받은 데이터를 Map형태로 저장한다. !는 nullSafty이다.
 
     //display all user except current user
     if (_auth.currentUser!.email != data['email']) {
+      //FirebaseAuth 의 인스턴스인 _auth로 부터 현재 사용자 정보를 받아 FirebaseFireStore의
+      //email과 비교해 같지 않는 경우(사용자가 아닌 다른 사람의 경우)
+
       return ListTile(
         title: Text(data['email']),
+        // 각 사용자의 email을 각 리스트 텍스츠로 표시
         onTap: () {
           //pass the clicked user's UID to the chat page
+          //해당 리스트 타일을 누르면
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ChatPage(
+                //ChatPage로 이동한다
+                //ChatP age는 email, uid를 필수로 입력해야하므로, 상용자의 email, uid를 전달한다.
                 receiveruserEmali: data['email'],
                 receiverUserId: data['uid'],
               ),
