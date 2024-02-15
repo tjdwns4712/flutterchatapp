@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context) => ChatPage(
                 //ChatPage로 이동한다
                 //ChatP age는 email, uid를 필수로 입력해야하므로, 상용자의 email, uid를 전달한다.
-                receiveruserEmali: data['email'],
+                receiveruserEmail: data['email'],
                 receiverUserId: data['uid'],
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:chatapp/components/chat_bubble.dart';
 import 'package:chatapp/components/my_text_field.dart';
 import 'package:chatapp/services/chat/chat_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,12 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  final String receiveruserEmali;
+  final String receiveruserEmail;
   final String receiverUserId;
 
   const ChatPage({
     super.key,
-    required this.receiveruserEmali,
+    required this.receiveruserEmail,
     required this.receiverUserId,
   });
   //ChatPage는 email과, uid를 전달받는다.
@@ -39,7 +40,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiveruserEmali),
+        title: Text(widget.receiveruserEmail),
       ),
       body: Column(
         children: [
@@ -48,7 +49,10 @@ class _ChatPageState extends State<ChatPage> {
             child: _buildMessageList(),
           ),
           //user input
-          _buildMessageInput()
+          _buildMessageInput(),
+          const SizedBox(
+            height: 25,
+          ),
         ],
       ),
     );
@@ -92,7 +96,10 @@ class _ChatPageState extends State<ChatPage> {
       child: Column(
         children: [
           Text(data['senderEmail']),
-          Text(data['message']),
+          const SizedBox(
+            height: 5,
+          ),
+          ChatBubble(message: data['message']),
         ],
       ),
     );
@@ -100,27 +107,30 @@ class _ChatPageState extends State<ChatPage> {
 
   //메시지 입력
   Widget _buildMessageInput() {
-    return Row(
-      children: [
-        //textfield
-        Expanded(
-          child: MyTextField(
-            controller: _messageController,
-            hintText: 'Enter message',
-            obscureText: false,
-            //민감한 정보 가리지 않음
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: Row(
+        children: [
+          //textfield
+          Expanded(
+            child: MyTextField(
+              controller: _messageController,
+              hintText: 'Enter message',
+              obscureText: false,
+              //민감한 정보 가리지 않음
+            ),
           ),
-        ),
 
-        //sendmessage
-        IconButton(
-          onPressed: sendMessage,
-          icon: const Icon(
-            Icons.arrow_upward,
-            size: 40,
+          //sendmessage
+          IconButton(
+            onPressed: sendMessage,
+            icon: const Icon(
+              Icons.arrow_upward,
+              size: 40,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
