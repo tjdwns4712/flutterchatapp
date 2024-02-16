@@ -24,7 +24,7 @@ class ChatBubble extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           child: Text(
-            userId,
+            userId.split('@')[0],
             style: const TextStyle(
               fontSize: 16,
               color: Colors.black,

@@ -153,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: MyTextField(
               controller: _messageController,
-              hintText: 'Enter message',
+              hintText: '메시지를 입력하세요',
               obscureText: false,
               //민감한 정보 가리지 않음
             ),

@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //instance of auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
   //sign user out
   void signOut() {
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(15.0),
         child: _buildUserList(),
       ),
     );
@@ -77,14 +78,22 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             // _buildUserListItem을 호출하여 각 사용자를 위한 위젯을 만듭니다.
             return Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  color: Colors.blueAccent,
-                  child: _buildUserListItem(
-                    snapshot.data!.docs[index],
-                  ),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 3),
+              child: Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: _buildUserListItem(
+                  snapshot.data!.docs[index],
                 ),
               ),
             );
@@ -104,31 +113,38 @@ class _HomePageState extends State<HomePage> {
 
     //display all user except current user
     if (_auth.currentUser!.email != data['email']) {
-      //FirebaseAuth 의 인스턴스인 _auth로 부터 현재 사용자 정보를 받아 FirebaseFireStore의
-      //email과 비교해 같지 않는 경우(사용자가 아닌 다른 사람의 경우)
-
       return ListTile(
-        title: Text(data['email']),
-        // 각 사용자의 email을 각 리스트 텍스츠로 표시
+        title: Text(
+          data['email'],
+          style: const TextStyle(fontSize: 20),
+        ),
         onTap: () {
-          //pass the clicked user's UID to the chat page
-          //해당 리스트 타일을 누르면
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ChatPage(
-                //ChatPage로 이동한다
-                //ChatP age는 email, uid를 필수로 입력해야하므로, 상용자의 email, uid를 전달한다.
                 receiveruserEmail: data['email'],
                 receiverUserId: data['uid'],
               ),
             ),
           );
         },
+        tileColor: Colors.white, // 혹시 배경색을 변경하고 싶다면 여기에 추가
       );
     } else {
-      //return empth container
-      return Container();
+      // return a container with blue background for the current user
+      return Container(
+        color: Colors.blueAccent,
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          data['email'],
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+      );
     }
   }
 }
