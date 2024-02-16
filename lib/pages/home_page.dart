@@ -31,15 +31,24 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomePage'),
+        title: const Text(
+          '친구 목록',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
+        ),
         actions: [
           IconButton(
             onPressed: signOut,
-            icon: const Icon(Icons.logout),
+            icon: const Icon(
+              Icons.logout,
+              size: 30,
+            ),
           )
         ],
       ),
-      body: _buildUserList(),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: _buildUserList(),
+      ),
     );
   }
 
@@ -63,13 +72,23 @@ class _HomePageState extends State<HomePage> {
           return const Text('Loading...');
         }
 
-        return ListView(
-          //특이 사항이 없다면
-          children: snapshot.data!.docs
-              //스트리밍으로 부터 받은(snapshot) 데이터(data)의 각 문서(docs) 에 대해
-              .map<Widget>((doc) => _buildUserListItem(doc))
-              // _buildUserListItem을 호출하여 각 사용자를 위한 위젯 목록형태로 만듬
-              .toList(),
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            // _buildUserListItem을 호출하여 각 사용자를 위한 위젯을 만듭니다.
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  color: Colors.blueAccent,
+                  child: _buildUserListItem(
+                    snapshot.data!.docs[index],
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     );

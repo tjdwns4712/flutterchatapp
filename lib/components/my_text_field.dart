@@ -22,15 +22,17 @@ class MyTextField extends StatelessWidget {
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(10),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey),
-          //포커스를 받을 때 테두리 색
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+          //포커스를 받을 때
         ),
         fillColor: Colors.grey.shade100,
         filled: true,
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.grey),
+        hintStyle: const TextStyle(color: Colors.black54),
       ),
     );
   }

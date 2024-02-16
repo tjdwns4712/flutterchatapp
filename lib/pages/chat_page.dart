@@ -76,23 +76,23 @@ class _ChatPageState extends State<ChatPage> {
 
         if (snapshot.hasError) {
           return Text('Error${snapshot.error}');
-        }
-        //에러가 있으면 에러를 Text로 출력하라.
+        } //에러가 있으면 에러를 Text로 출력하라.
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           const Text('Loading...');
-        }
-        // 값을 불러오는 중에는 Text를 출력하라.
+        } // 값을 불러오는 중에는 Text를 출력하라.
 
         if (snapshot.data == null) {
           return const Text('No data available'); // 또는 다른 처리 방법을 선택할 수 있습니다.
-        }
-        //만약 불러올 값이 없다면, Text를 반환하다.
+        } //만약 불러올 값이 없다면, Text를 반환하다.
 
-        return ListView(
-          children: snapshot.data!.docs
-              .map((document) => _buildMessageItem(document))
-              .toList(),
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ListView(
+            children: snapshot.data!.docs
+                .map((document) => _buildMessageItem(document))
+                .toList(),
+          ),
         );
         //위에 해당하지 않는다면, ListView형태로 _buildMessageItem을 출력하라.
         //getMessage를 통해 현재시간으로 정렬된 메시지를 받아온다.
@@ -114,17 +114,28 @@ class _ChatPageState extends State<ChatPage> {
     // 그 저장된 값 중 senderId가 현재 사용자 정보와 일치하면 오른쪽으로 정렬, 아니면
     // 왼쪽으로 정렬하는 변수.
 
+    var idAligment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
+        ? CrossAxisAlignment.end
+        : CrossAxisAlignment.start;
+
+    var messageColor = (data['senderId'] == _firebaseAuth.currentUser!.uid)
+        ? const Color(0xFF2196F3)
+        : const Color(0xFF4CAF50);
+
     return Container(
       alignment: aligment,
-      //위 aligment에서 정의된 방식으로 정렬
       child: Column(
         children: [
-          Text(data['senderEmail']),
-          //Firesotre에 저장된 senderEmail을 불러옴
           const SizedBox(
             height: 5,
           ),
-          ChatBubble(message: data['message']),
+          ChatBubble(
+            userId: data['senderEmail'],
+            message: data['message'],
+            messageColor: messageColor,
+            alignment: aligment,
+            idAligment: idAligment,
+          ),
           //Firesotre에 저장된 message를 불러옴
           //ChatBubble 스타일 적용
         ],

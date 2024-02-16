@@ -47,7 +47,7 @@ class _LoginpageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.blueAccent[700],
       body: SafeArea(
         // os따라 필요한 패딩값을 적절히 알아서 넣어줌
         child: Center(
@@ -63,15 +63,18 @@ class _LoginpageState extends State<LoginPage> {
                 const Icon(
                   Icons.message,
                   size: 80,
+                  color: Colors.white,
                 ),
                 const SizedBox(
                   height: 50,
                 ),
                 //welcome back message
                 const Text(
-                  "Welcome back you've been missed",
+                  "환영합니다, 메신저에 로그인 해 주세요.",
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
                   ),
                 ),
 
@@ -81,9 +84,10 @@ class _LoginpageState extends State<LoginPage> {
 
                 //emailTextField
                 MyTextField(
-                    controller: emailController,
-                    hintText: 'Email',
-                    obscureText: false),
+                  controller: emailController,
+                  hintText: '이메일',
+                  obscureText: false,
+                ),
 
                 const SizedBox(
                   height: 10,
@@ -92,7 +96,7 @@ class _LoginpageState extends State<LoginPage> {
                 //password textfield
                 MyTextField(
                     controller: passwordController,
-                    hintText: 'Password',
+                    hintText: '비밀번호',
                     obscureText: true),
 
                 const SizedBox(
@@ -100,7 +104,10 @@ class _LoginpageState extends State<LoginPage> {
                 ),
 
                 //sign in button
-                MyButton(onTap: signIn, text: 'sign in'),
+                MyButton(
+                  onTap: signIn,
+                  text: '로그인',
+                ),
 
                 const SizedBox(
                   height: 50,
@@ -110,16 +117,24 @@ class _LoginpageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Not a member?'),
+                    const Text(
+                      '회원이 아니신가요? ->',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
                     const SizedBox(
-                      width: 4,
+                      width: 8,
                     ),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(
-                        'Register Now',
+                        '회원 등록하기',
                         style: TextStyle(
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),

@@ -59,7 +59,7 @@ class _RegisterState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.blueAccent[700],
       body: SafeArea(
         // os따라 필요한 패딩값을 적절히 알아서 넣어줌
         child: Center(
@@ -74,6 +74,7 @@ class _RegisterState extends State<RegisterPage> {
                 //logo
                 const Icon(
                   Icons.message,
+                  color: Colors.white,
                   size: 80,
                 ),
                 const SizedBox(
@@ -81,9 +82,10 @@ class _RegisterState extends State<RegisterPage> {
                 ),
                 //welcome back message
                 const Text(
-                  "Welcome back you've been missed",
+                  "회원 가입을 환영합니다.",
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
+                    color: Colors.white,
                   ),
                 ),
 
@@ -94,7 +96,7 @@ class _RegisterState extends State<RegisterPage> {
                 //emailTextField
                 MyTextField(
                     controller: emailController,
-                    hintText: 'Email',
+                    hintText: '이메일',
                     obscureText: false),
 
                 const SizedBox(
@@ -104,7 +106,7 @@ class _RegisterState extends State<RegisterPage> {
                 //password textfield
                 MyTextField(
                     controller: passwordController,
-                    hintText: 'Password',
+                    hintText: '비밀번호',
                     obscureText: true),
 
                 const SizedBox(
@@ -114,7 +116,7 @@ class _RegisterState extends State<RegisterPage> {
                 //password textfield
                 MyTextField(
                     controller: confirmPasswordController,
-                    hintText: 'Password',
+                    hintText: '비밀번호 확인',
                     obscureText: true),
 
                 const SizedBox(
@@ -124,7 +126,7 @@ class _RegisterState extends State<RegisterPage> {
                 //sign up button
                 MyButton(
                   onTap: signUp,
-                  text: 'sign up',
+                  text: '회원가입',
                 ),
 
                 const SizedBox(
@@ -135,17 +137,21 @@ class _RegisterState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Already a member?'),
+                    const Text(
+                      '이미 회원이신가요? ->',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                     const SizedBox(
                       width: 4,
                     ),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(
-                        'Login Now',
+                        '로그인하기',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                            fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
                   ],
