@@ -29,6 +29,7 @@ class ChatService extends ChangeNotifier {
       timestamp: timestamp,
     );
     //model.dart에 만들어준 형식을 사용하여 각종 정보를 저장한다.
+    //receiverId, message는 입력받는다.
 
     //currend user id, receiver id를 조합해 roomid만들기
     List<String> ids = [currentUserId, receiverId];

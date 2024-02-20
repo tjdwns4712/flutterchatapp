@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//이 파일은 메인페이지 이다, 시작시 각종 초기화, 초기 페이지로 이동을 담당한다.
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //앱이 실행될 때 초기화되도록 함.
@@ -29,6 +31,7 @@ class ChatApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AuthGate(),
+      //AuthGate로 이동한다.
     );
   }
 }

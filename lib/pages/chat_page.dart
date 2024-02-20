@@ -5,9 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+//채팅을 구현하는 페이지이다.
+
 class ChatPage extends StatefulWidget {
   final String receiveruserEmail;
   final String receiverUserId;
+  //받는 사람의 이메일, id를 받는 변수
 
   const ChatPage({
     super.key,
@@ -15,6 +18,7 @@ class ChatPage extends StatefulWidget {
     required this.receiverUserId,
   });
   //ChatPage는 email과, uid를 전달받고 이 정보를 통해 사용이 가능하다.
+  //HomePage로 부터 값을 받는다.
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -28,17 +32,16 @@ class _ChatPageState extends State<ChatPage> {
   //인증을 위한 FirebaseAuth를 사용하기 위한 변수 설정
 
   void sendMessage() async {
-    //only send a message if there is something to send
     if (_messageController.text.isNotEmpty) {
+      //메시지에 무언가 적혀힜다면,
       await _chatService.sendMessage(
           widget.receiverUserId, _messageController.text);
+      //firebase의 chatService를 사용해 userId, 메시지 내용을 보낸다.
 
-      //clear the text after sending message
       _messageController.clear();
+      //보낸 메시지 내용 지우기
     }
   }
-  //메시지를 보내기 위한 함수. _messageController에 어떤 값이 입력되었으면,
-  //ChatService에 정의된 sendMessage를 사용해 Firebase에 값을 저장한다.
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +55,7 @@ class _ChatPageState extends State<ChatPage> {
           //messages
           Expanded(
             child: _buildMessageList(),
+            //_buildMessageList를 이용하여 메시지리스트를 만듬
           ),
           //user input
           _buildMessageInput(),
@@ -71,9 +75,8 @@ class _ChatPageState extends State<ChatPage> {
 
       stream: _chatService.getMessages(
           widget.receiverUserId, _firebaseAuth.currentUser!.uid),
+      //ChatService의 getMessage를 사용한다. receiverUserId, 현재 사용자 uid를 넘긴다.
       builder: (context, snapshot) {
-        // ChatService의 getMessage에 값을 넣어 데이터베이스로 부터 값을 받아온다.
-
         if (snapshot.hasError) {
           return Text('Error${snapshot.error}');
         } //에러가 있으면 에러를 Text로 출력하라.
@@ -104,9 +107,8 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     //Firestore의 DocumentSnapshotsms Map<String, dynamic>형태로 저장되기 때문에
-    // 명시적인 형변환을 한다.
+    //키값을 통해 타입과 관계없이 값을 가져오기 위해 위와 같이 맵핑한다.
 
-    // align the messages to the right if the sender is user, other user to thr left
     var aligment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
@@ -117,10 +119,12 @@ class _ChatPageState extends State<ChatPage> {
     var idAligment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
         ? CrossAxisAlignment.end
         : CrossAxisAlignment.start;
+    //senderId는 왼쪽으로, 현재 사용자는 오른쪽으로 정렬하는 변수
 
     var messageColor = (data['senderId'] == _firebaseAuth.currentUser!.uid)
         ? const Color(0xFF2196F3)
         : const Color(0xFF4CAF50);
+    //senderId는 파란색으로 현재사용자가 보내는 메시지는 녹색으로 바꾸는 변수
 
     return Container(
       alignment: aligment,
@@ -145,6 +149,7 @@ class _ChatPageState extends State<ChatPage> {
 
   //메시지 입력창
   Widget _buildMessageInput() {
+    //메시지 입력창을 구현
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Row(
@@ -162,6 +167,7 @@ class _ChatPageState extends State<ChatPage> {
           //sendmessage
           IconButton(
             onPressed: sendMessage,
+            //snedMessage 함수를 통해 기능을 구현
             icon: const Icon(
               Icons.arrow_upward,
               size: 40,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//버튼의 모양을 설정하는 페이지이다
+
 class MyButton extends StatelessWidget {
   final void Function()? onTap;
   final String text;

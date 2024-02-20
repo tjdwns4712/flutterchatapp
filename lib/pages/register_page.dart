@@ -4,6 +4,8 @@ import 'package:chatapp/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//사용자의 이메일, 비밀번호, 비밀번호 확인을 입력받고 사용자 등록 처리를 한다.
+
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
   const RegisterPage({super.key, required this.onTap});
@@ -14,7 +16,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterState extends State<RegisterPage> {
   @override
-  //controllers
+  //입력 컨트롤러
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -42,9 +44,8 @@ class _RegisterState extends State<RegisterPage> {
         emailController.text,
         passwordController.text,
       );
-      //AuthService로 부터 signUpWithEmailandPassword를 받아와 값을 넣음
+      //AuthService로 부터 signUpWithEmailandPassword를 불러 사용자 등록을 진행함
     } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -148,6 +149,7 @@ class _RegisterState extends State<RegisterPage> {
                     ),
                     GestureDetector(
                       onTap: widget.onTap,
+                      //터치를 하면 LoginOrRegister가 터치를 인식해 페이지를 이동시킨다.
                       child: const Text(
                         '로그인하기',
                         style: TextStyle(

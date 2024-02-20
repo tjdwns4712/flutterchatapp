@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//채팅에 보내는 메시지의 스타일을 정의하는 컴포넌트
+
 class ChatBubble extends StatelessWidget {
   final String userId;
   final String message;

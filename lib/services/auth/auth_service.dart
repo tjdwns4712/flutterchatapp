@@ -2,23 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AuthService extends ChangeNotifier {
-  //instance of auth
+//이 페이지는 기존 사용자 인증, 새로운 사용자 등록 로직을 처리해주는 페이지이다.
 
+class AuthService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   // _firebaseAuth는 Firebase Authentication 서비스의 인스턴스를 나타내는 객체
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   // _firebaseFirestore Firebase Firestore 서비스의 인스턴스를 나타내는 객체
 
-  //sign user in
+  //로그인 인증
   Future<UserCredential> signInwithEmailandPassword(
       String email, String password) async {
     //signInwithEmailandPassword는 email, password를 입력받아
     //firebase에 반환함으로서 인증작업을 진행한다.
 
     try {
-      //사용자 등록
+      //사용자 인증
       UserCredential userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -27,8 +27,9 @@ class AuthService extends ChangeNotifier {
 
       //아직 컬랙션이 없는 사용자를 위한 도큐먼트 추가
       _firestore.collection('uesrs').doc(userCredential.user!.uid).set({
-        //uesrs컬랙션 내 uid가 현재 사용자 uid인 곳에서, uid를 형재 사용자 uid로
+        // uesrs컬랙션 내 uid가 현재 사용자 uid인 곳에서, uid를 형재 사용자 uid로
         // email을 email로 설정한다.
+        // 인증이 완료된 사용자는 컬랙션에 추가하여 채팅에서 활용할 데이터에 넣는다
 
         'uid': userCredential.user!.uid,
         'email': email,
@@ -44,10 +45,11 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  //create a new user
+  //새로운 유저 생성
   Future<UserCredential> signUpWithEmailandPassword(
       String email, password) async {
-    //signUpWithEmailandPassword은 email, password를 입력받아 등록 처리를 한다.
+    //signUpWithEmailandPassword은 email, password를 입력받는다.
+
     try {
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
@@ -61,7 +63,7 @@ class AuthService extends ChangeNotifier {
       _firestore.collection('uesrs').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'email': email,
-      });
+      }); // firestore에 넣어 향후 사용할 데이터 컬랙션에 추가한다.
 
       return userCredential;
     }

@@ -4,8 +4,12 @@ import 'package:chatapp/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// 이 페이지는 로그인 화면을 구현하고,
+
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
+  //터치를 처리하기 위한 선언
+
   const LoginPage({super.key, required this.onTap});
 
   @override
@@ -13,25 +17,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginpageState extends State<LoginPage> {
-  //controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  //email, password를 입력받기 위한 텍스트 컨트롤러 선언
 
-  //sign in user
+  //로그인
   void signIn() async {
-    //get auth service
-
     final authService = Provider.of<AuthService>(context, listen: false);
-    // Provider패킬지를 이용하여 AuthService서비스를 가져온다.
+    // Provider패키지를 이용하여 AuthService서비스를 가져온다.
     //listen = false로 값이 변해도 위젯을 다시 빌드하지 않습니다.
 
     try {
       await authService.signInwithEmailandPassword(
         emailController.text,
         passwordController.text,
+        //authService의 signInwithEmailandPassword 함수를 사용해 인증을 처리
       );
-      //emailController, passwordController를 통해 입력받은 값을
-      //signInwithEmailandPassword로 보내어 firebase로 부터 사용자인지 확인
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -129,6 +130,7 @@ class _LoginpageState extends State<LoginPage> {
                     ),
                     GestureDetector(
                       onTap: widget.onTap,
+                      //widget에 터치를 하면 LoginOrRegisterrk 터치를 인식하고 화면을 전환한다
                       child: const Text(
                         '회원 등록하기',
                         style: TextStyle(
